@@ -1,0 +1,10 @@
+Flask-RESTful
+Flask-PyMongo
+gunicorn
+pymongo[gssapi,srv,tls]
+flask-cors
+python-dotenv
+flake8
+marshmallow
+webargs
+certifi
