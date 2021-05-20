@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  hack-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: learn-docker-backend
+    networks:
+      - hack-net
+    environment:
+      - MONGO_URI_MASTER=mongodb://hack-mongo:27017/learn-docker
+    ports:
+      - 5000:80
+    depends_on:
+      - hack-db
+
+  hack-db:
+    image: mongo
+    networks:
+      - hack-net
+    volumes:
+      - hack-data:/data/db
+
+networks:
+  hack-net:
+
+volumes:
+  hack-data:
