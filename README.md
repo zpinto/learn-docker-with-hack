@@ -211,6 +211,7 @@ git clone https://github.com/zpinto/learn-docker-with-hack.git
 code learn-docker-with-hack # if you use VSCode
 ```
 
+
 ### Step 2: Create a Dockerfile
 
 - Now that you have your Dockerfile opened up, it is time to write the instructions that will build your image.
@@ -244,8 +245,7 @@ code learn-docker-with-hack # if you use VSCode
     COPY . /app
 
     ENTRYPOINT [ "gunicorn", "--bind", "0.0.0.0:80", "wsgi:app" ]
-
-```
+  ```
 </details>
 
 ### Step 3: Build an Image
@@ -255,9 +255,7 @@ code learn-docker-with-hack # if you use VSCode
 - Run the build command from within the same directory as the Dockerfile to create an image called `learn-docker-backend`.
 
 ```
-
 docker build -t learn-docker-backend:latest .
-
 ```
 
 ### Step 4: Create a Network
@@ -267,9 +265,7 @@ docker build -t learn-docker-backend:latest .
 - Run the following command to create a bridge network called `hack-net`
 
 ```
-
 docker network create hack-net
-
 ```
 
 ### Step 5: Create a Volume
@@ -279,9 +275,7 @@ docker network create hack-net
 - Run the following command to create a volume named `learn-docker-data`
 
 ```
-
 docker volume create learn-docker-data
-
 ```
 
 ### Step 6: Spin up Containers
@@ -291,9 +285,7 @@ docker volume create learn-docker-data
 - Open a terminal window and run the following command to spin up a mongoDB container on the network we created and mounted to our volume we created.
 
 ```
-
 docker container run --rm --name hack-mongo --network hack-net --volume learn-docker-data:/data/db mongo:latest
-
 ```
 
 - Open a new terminal window in order to spin up our flask app container using the image we previously build from our Dockerfile.
@@ -301,60 +293,43 @@ docker container run --rm --name hack-mongo --network hack-net --volume learn-do
 - Run the following command to create a container from the image `learn-docker-backend`.
 
 ```
-
-docker container run --rm --network hack-net -e MONGO_URI_MASTER="mongodb://hack-mongo:27017/zothacks2020" -p 5000:80 hack-docker:latest
-
+docker container run --rm --network hack-net -e MONGO_URI_MASTER="mongodb://hack-mongo:27017/zothacks2020"  -p 5000:80 learn-docker-backend:latest
 ```
 
 - The following should give guidance as to what all args and flags are.
 ```
-
-docker container run --rm --name <container-name> --network <connected-networks> -e <environment-variable>=<value> -p <publish-port-localhost>:<publish-port-container> --volume <volume-name>:<container-mount-point> <image-name>:<version-number>
-
+docker container run --rm --name <container-name> --network <connected-networks> -e <environment-variable>=<value>  -p <publish-port-localhost>:<publish-port-container> --volume <volume-name>:<container-mount-point> <image-name>:<version-number>
 ```
 
 ### Step 7: Test Deployment
 
 - We can now test out our flask app by using postman to make some requests.
-- Follow the GIFs below.
-- Import the postman collection from the repo.
-<img src='gifs/import_postman.gif' title='Import Collection' width='' alt='Import Collection' />
+- Import the postman collection from the repo and follow the GIFs to make requests to the app.
 
-- Create an environment in postman and add a variable called `url`. Set it to `localhost:5000`
-<img src='gifs/create_env.gif' title='Create Environment' width='' alt='Create Environment' />
-
-- Make some requests to the flask app. If the requests work, you have successfully deployed the app.
-<img src='gifs/make_requests.gif' title='Make Requests' width='' alt='Make Requests' />
+<img src='' title='' width='' alt='' />
 
 ### Step 8: Clean Up
 
 - In order to clean up and stop the containers, we will first find their IDs by running the following command.
 
 ```
-
 docker container ls
-
 ```
 
 - Now we will stop these containers by running the following command. (containers will also be removed since they were started with `--rm` option)
 
 ```
-
 docker container stop <container_id>
-
 ```
 
 - Remove the docker network and volume by running the following two command.
 
 ```
-
 docker network rm hack-net
 docker volume rm learn-docker-data
-
 ```
 
 ## Additional Material
 
 - [Docker Docs](https://docs.docker.com/)
 - [Docker Class I Took](https://www.udemy.com/share/101WlGBEUSc1xbQXw=/)
-```
