@@ -224,79 +224,119 @@ Make sure that you have all necessary software installed before proceeding. Inst
 - [Create a Volume](#step-5-create-a-volume)
 - [Spin Up Containers](#step-6-spin-up-containers)
 - [Test Deployment](#step-7-test-deployment)
-- [Brief Docker Compose Demo](#brief-docker-compose-demo)
 
 ### Step 1: Clone Repo
 
 - Clone this repository from GitHub in order to copy all the source code to your local machine.
-- Open the repository in an editor.
+- Open the repository in an editor. Get ready to add to the file named Dockerfile
 
 ```
-
+git clone https://github.com/zpinto/learn-docker-with-hack.git
+code learn-docker-with-hack # if you use VSCode
 ```
 
 <img src='' title='' width='' alt='' />
 
 ### Step 2: Create a Dockerfile
 
-- x
+- Now that you have your Dockerfile opened up, it is time to write the instructions that will build your image.
+- See if you can do it yourself using the information provided on Dockerfile instructions [here](#possible-dockerfile-instructions). Once you have given it a try, verify your file with the snippet in the dropdown.
 
-```
+- What the Dockerfile should do:
+  - Start with base image `python:3.9`
+  - Expose PORT 80 so your flask app can listen on it
+  - Copy only the `requirements.txt` into the container at `/app/requirements.txt`
+  - Change your working directory to `/app`
+  - Run `pip install requirements.txt` in order to install the app's dependencies
+  - Copy the flask app into the container at `/app`
+  - Set the entrypoint to run the command `gunicorn --bind 0.0.0.0:80 wsgi:app`
 
-```
-
-<img src='' title='' width='' alt='' />
+<details>
+<summary>Correct Dockerfile Code</summary>
+<p>
+add code
+</p>
+</details>
 
 ### Step 3: Build an Image
 
-- x
+- Now that our Dockerfile is ready to go, we can build our image.
+- Our image needs a name and a tag.
+- Run the build command from within the same directory as the Dockerfile to create an image called `learn-docker-backend`.
 
 ```
-
+docker build -t learn-docker-backend:latest .
 ```
 
 <img src='' title='' width='' alt='' />
 
 ### Step 4: Create a Network
 
-- x
+- Now we need to create a network for our containers to talk to each other on.
+- Our container containing the flask app will need to talk to the container running mongoDB
+- Run the following command to create a bridge network called `hack-net`
 
 ```
-
+docker network create hack-net
 ```
-
-<img src='' title='' width='' alt='' />
 
 ### Step 5: Create a Volume
 
-- x
+- In order to make sure that our database data persists passed the life of our mongoDB container, we need to create a volume that is managed by docker.
+- We will later mount this to our container.
+- Run the following command to create a volume named `learn-docker-data`
 
 ```
-
+docker volume create learn-docker-data
 ```
-
-<img src='' title='' width='' alt='' />
 
 ### Step 6: Set up Containers
 
-- x
+- Now it is time to start up our containers.
+- Since our flask app depends on mongoDB, we need to create our mongoDB container first.
+- Open a terminal window and run the following command to spin up a mongoDB container on the network we created and mounted to our volume we created.
 
 ```
-
+docker container run --rm --name hack-mongo --network hack-net --volume learn-docker-data:/data/db mongo:latest
 ```
 
-<img src='' title='' width='' alt='' />
+- Open a new terminal window in order to spin up our flask app container using the image we previously build from our Dockerfile.
+- In addition to adding this container to the `hack-net` network, we will pass an environment variable into this container so that it knows the URI for the mongoDB instance. We will also publish port 80 of our container to port 5000 of our local machine so we can talk to the flask app from outside of the bridge network we created.
+- Run the following command to create a container from the image `learn-docker-backend`.
+
+```
+    docker container run --rm --network hack-net -e MONGO_URI_MASTER="mongodb://hack-mongo:27017/zothacks2020"  -p 5000:80 hack-docker:latest
+```
 
 ### Step 7: Test Deployment
 
-- x
-
-```
-
-```
+- We can now test out our flask app by using postman to make some requests.
+- Import the postman collection from the repo and follow the GIFs to make requests to the app.
 
 <img src='' title='' width='' alt='' />
 
-### Brief Docker Compose Demo
+### Step 8: Clean Up
+
+- In order to clean up and stop the containers, we will first find their IDs by running the following command.
+
+```
+docker container ls
+```
+
+- Now we will stop these containers by running the following command. (containers will also be removed since they were started with `--rm` option)
+
+```
+docker container stop <container_id>
+```
+
+- Remove the docker network and volume by running the following two command.
+
+```
+docker network rm hack-net
+docker volume rm learn-docker-data
+```
 
 ## Additional Material
+
+- [Docker Docs](https://docs.docker.com/)
+- [Docker Class I Took](https://www.udemy.com/share/101WlGBEUSc1xbQXw=/)
