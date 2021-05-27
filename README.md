@@ -304,9 +304,16 @@ docker container run --rm --name <container-name> --network <connected-networks>
 ### Step 7: Test Deployment
 
 - We can now test out our flask app by using postman to make some requests.
-- Import the postman collection from the repo and follow the GIFs to make requests to the app.
+- Follow the GIFs below.
+- Import the postman collection from the repo.
+<img src='gifs/import_postman.gif' title='Import Collection' width='' alt='Import Collection' />
 
-<img src='' title='' width='' alt='' />
+- Create an environment in postman and add a variable called `url`. Set it to `localhost:5000`
+<img src='gifs/create_env.gif' title='Create Environment' width='' alt='Create Environment' />
+
+- Make some requests to the flask app. If the requests work, you have successfully deployed the app.
+<img src='gifs/make_requests.gif' title='Make Requests' width='' alt='Make Requests' />
+
 
 ### Step 8: Clean Up
 
