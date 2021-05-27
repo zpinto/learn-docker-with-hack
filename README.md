@@ -183,30 +183,6 @@ Docker’s networking subsystem is pluggable, using drivers. Several drivers exi
 - [`docker network connect`](https://docs.docker.com/engine/reference/commandline/network_connect/) Connect a container to a network
 - [`docker network disconnect`](https://docs.docker.com/engine/reference/commandline/network_disconnect/) Disconnect a container from a network
 
-### docker build
-
-```
-> docker build -t <image-name>:<version-number> .
-```
-
-### docker network create
-
-```
-> docker network create <network-name>
-```
-
-### docker volume create
-
-```
-> docker volume create <volume-name>
-```
-
-### docker container run
-
-```
-> docker container run --rm --name <container-name> --network <connected-networks> -e <environment-variable>=<value>  -p <publish-port-local>:<publish-port-container> --volume <volume-name>:<container-mount-point> <image-name>:<version-number>
-```
-
 ## Tutorial
 
 ### Overview
@@ -317,7 +293,12 @@ docker container run --rm --name hack-mongo --network hack-net --volume learn-do
 - Run the following command to create a container from the image `learn-docker-backend`.
 
 ```
-    docker container run --rm --network hack-net -e MONGO_URI_MASTER="mongodb://hack-mongo:27017/zothacks2020"  -p 5000:80 hack-docker:latest
+docker container run --rm --network hack-net -e MONGO_URI_MASTER="mongodb://hack-mongo:27017/zothacks2020"  -p 5000:80 hack-docker:latest
+```
+
+- The following should give guidance as to what all args and flags are.
+```
+docker container run --rm --name <container-name> --network <connected-networks> -e <environment-variable>=<value>  -p <publish-port-localhost>:<publish-port-container> --volume <volume-name>:<container-mount-point> <image-name>:<version-number>
 ```
 
 ### Step 7: Test Deployment
