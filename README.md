@@ -228,14 +228,13 @@ Make sure that you have all necessary software installed before proceeding. Inst
 ### Step 1: Clone Repo
 
 - Clone this repository from GitHub in order to copy all the source code to your local machine.
-- Open the repository in an editor. Get ready to add to the file named Dockerfile
+- Open the repository in an editor. Get ready to add to the file named Dockerfile.
 
 ```
 git clone https://github.com/zpinto/learn-docker-with-hack.git
 code learn-docker-with-hack # if you use VSCode
 ```
 
-<img src='' title='' width='' alt='' />
 
 ### Step 2: Create a Dockerfile
 
@@ -252,10 +251,25 @@ code learn-docker-with-hack # if you use VSCode
   - Set the entrypoint to run the command `gunicorn --bind 0.0.0.0:80 wsgi:app`
 
 <details>
-<summary>Correct Dockerfile Code</summary>
-<p>
-add code
-</p>
+  <summary>Correct Dockerfile Code</summary>
+  
+  ```FROM python:3.9
+    FROM python:3.9
+  
+    EXPOSE 80
+
+    # We copy just the requirements.txt first to leverage Docker cache
+    COPY ./requirements.txt /app/requirements.txt
+
+    WORKDIR /app
+
+    RUN pip install -r requirements.txt
+
+    # Assuming dependencies do not change, everything above will not have to be rerun when rebuilding the image
+    COPY . /app
+
+    ENTRYPOINT [ "gunicorn", "--bind", "0.0.0.0:80", "wsgi:app" ]
+  ```
 </details>
 
 ### Step 3: Build an Image
@@ -267,8 +281,6 @@ add code
 ```
 docker build -t learn-docker-backend:latest .
 ```
-
-<img src='' title='' width='' alt='' />
 
 ### Step 4: Create a Network
 
@@ -290,7 +302,7 @@ docker network create hack-net
 docker volume create learn-docker-data
 ```
 
-### Step 6: Set up Containers
+### Step 6: Spin up Containers
 
 - Now it is time to start up our containers.
 - Since our flask app depends on mongoDB, we need to create our mongoDB container first.
