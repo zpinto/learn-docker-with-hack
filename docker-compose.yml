@@ -9,7 +9,7 @@ services:
     networks:
       - hack-net
     environment:
-      - MONGO_URI_MASTER=mongodb://hack-mongo:27017/learn-docker
+      - MONGO_URI_MASTER=mongodb://hack-db:27017/learn-docker
     ports:
       - 5000:80
     depends_on:
