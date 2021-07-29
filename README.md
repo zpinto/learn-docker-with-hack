@@ -8,7 +8,7 @@ In addition, a detailed tutorial will allow you to put some of this material int
 
 ## Virtual Workshop
 
-[Youtube]() | [Slides](https://docs.google.com/presentation/d/1E2a0Es06mZ9Q1ILeT5hc6EhQ1f5WW6XJBrYepbmOu58/edit?usp=sharing)
+[Youtube](https://youtu.be/wjG_dqMUk4o) | [Slides](https://docs.google.com/presentation/d/1E2a0Es06mZ9Q1ILeT5hc6EhQ1f5WW6XJBrYepbmOu58/edit?usp=sharing)
 
 ## Table of Contents
 
